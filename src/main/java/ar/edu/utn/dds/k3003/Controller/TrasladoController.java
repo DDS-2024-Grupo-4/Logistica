@@ -73,4 +73,16 @@ public class TrasladoController {
 
             }
     }
+
+
+    public void deleteAll(Context context) {
+        try {
+            this.fachada.borrarTraslados();
+            context.result("Todos los traslados han sido eliminados con éxito.");
+            context.status(HttpStatus.OK);
+        } catch (Exception e) {
+            context.result("Error al eliminar los traslados: " + e.getMessage());
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

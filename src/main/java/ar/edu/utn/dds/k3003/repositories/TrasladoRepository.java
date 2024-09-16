@@ -73,4 +73,10 @@ public class TrasladoRepository {
         return traslado;
     }
 
+    public void borrarTraslados() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM Traslado").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
 }
