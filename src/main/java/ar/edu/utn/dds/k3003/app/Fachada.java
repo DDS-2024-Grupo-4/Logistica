@@ -137,7 +137,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         //ahora cambio el estado de la vianda
         fachadaViandas.modificarEstado(trasladoDto.getQrVianda(), EstadoViandaEnum.EN_TRASLADO);
         this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
-        this.metricaRepository.incrementarMetrica("cantidad_traslados_en_curso");
+        this.metricaRepository.incrementarMetrica("cantidadTrasladosEnCurso");
 
     }
     @Override
@@ -155,8 +155,8 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         //cambio el estado del traslado
         Traslado traslado = trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);
 
-        this.metricaRepository.decrementarMetrica("cantidad_traslados_en_curso");
-        this.metricaRepository.incrementarMetrica("cantidad_traslados_realizados");
+        this.metricaRepository.decrementarMetrica("cantidadTrasladosEnCurso");
+        this.metricaRepository.incrementarMetrica("cantidadTrasladosRealizados");
 
     }
 
@@ -165,6 +165,15 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
     }
 
     public void borrarTraslados(){
+
         this.trasladoRepository.borrarTraslados();
+    }
+
+    public void borrarMetricas(){
+        this.metricaRepository.borrarMetricas();
+    }
+
+    public void borrarRutas(){
+        this.rutaRepository.borrarRutas();
     }
 }

@@ -44,7 +44,7 @@ public class MetricaRepository {
 
     public Metrica findByNombre(String nombre) {
         // Define la consulta JPQL para buscar la métrica por nombre
-        String jpql = "SELECT m FROM Metrica m WHERE m.nombre = nombre";
+        String jpql = "SELECT m FROM Metrica m WHERE m.nombre = :nombre";
         TypedQuery<Metrica> query = entityManager.createQuery(jpql, Metrica.class);
         query.setParameter("nombre", nombre);
 
@@ -69,6 +69,12 @@ public class MetricaRepository {
         entityManager.getTransaction().begin();
         Metrica metrica = findByNombre(nombre);
         metrica.setValor(metrica.getValor() - 1);
+        entityManager.getTransaction().commit();
+    }
+
+    public void borrarMetricas() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM Metrica").executeUpdate();
         entityManager.getTransaction().commit();
     }
 }

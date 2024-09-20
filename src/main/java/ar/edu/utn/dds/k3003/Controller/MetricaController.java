@@ -21,13 +21,25 @@ public class MetricaController {
     }
 
     public void obtenerMetrica(Context context) {
-        var nombre = context.pathParamAsClass("nombre", String.class).get();
+        var nombre = context.queryParamAsClass("nombre", String.class).get();
         try {
             var metrica = this.fachada.buscarMetricaXNombre(nombre);
             context.json(metrica);
         } catch (NoSuchElementException ex) {
             context.result(ex.getLocalizedMessage());
             context.status(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    public void deleteAllMetricas(Context context) {
+        try {
+            this.fachada.borrarMetricas();
+            context.result("Todas las metricas han sido eliminados con éxito.");
+            context.status(HttpStatus.OK);
+        } catch (Exception e) {
+            context.result("Error al eliminar las metricas: " + e.getMessage());
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

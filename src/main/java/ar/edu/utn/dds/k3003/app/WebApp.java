@@ -36,12 +36,15 @@ public class WebApp {
 
         app.post("/rutas", rutaController::agregar);
         app.post("/traslados", trasladosController::asignar);
-        app.post("/metrica", metricaController :: agregar);
+        app.post("/metricas", metricaController :: agregar);
+        app.get("/metricas/search/findByNombre", metricaController::obtenerMetrica);
         app.get("/rutas", rutaController::obtenerTodas);
         app.get("/traslados/{id}", trasladosController::obtener);
         app.get( "/traslados/search/findByColaboradorId", trasladosController::ObtenerTrasladosColaborador);
         app.patch("/traslados/{id}", trasladosController::modificarEstado);
         app.delete("/traslados", trasladosController::deleteAll);
+        app.delete("/metricas", metricaController::deleteAllMetricas);
+        app.delete("/rutas", rutaController::deleteAllRutas);
     }
 
     public static ObjectMapper createObjectMapper() {

@@ -28,5 +28,16 @@ public class RutaController {
         context.status(HttpStatus.OK);
     }
 
+    public void deleteAllRutas(Context context) {
+        try {
+            this.fachada.borrarRutas();
+            context.result("Todas las rutas han sido eliminados con éxito.");
+            context.status(HttpStatus.OK);
+        } catch (Exception e) {
+            context.result("Error al eliminar las rutas: " + e.getMessage());
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
