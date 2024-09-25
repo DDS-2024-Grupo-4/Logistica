@@ -20,8 +20,6 @@ public class Metrica {
     @Column(name = "valor")
     private int valor;
 
-    private static final String TOKEN = "token"; //para validar el request de las metricas
-
 
     public Metrica(){
 

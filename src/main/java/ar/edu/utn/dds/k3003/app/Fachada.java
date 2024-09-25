@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.Service.DDMetricsUtils;
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
@@ -8,6 +9,8 @@ import ar.edu.utn.dds.k3003.model.Metrica;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
 import ar.edu.utn.dds.k3003.repositories.*;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.datadog.DatadogMeterRegistry;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +35,12 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
     private FachadaViandas fachadaViandas;
     private FachadaHeladeras fachadaHeladeras;
 
+
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
+
+    final DDMetricsUtils metricsUtils = new DDMetricsUtils("transferencias");
+    final DatadogMeterRegistry registry = metricsUtils.getRegistry();
 
     public Fachada() {
         this.entityManagerFactory = Persistence.createEntityManagerFactory("entrega3_tp_dds");
@@ -157,6 +164,8 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
 
         this.metricaRepository.decrementarMetrica("cantidadTrasladosEnCurso");
         this.metricaRepository.incrementarMetrica("cantidadTrasladosRealizados");
+
+        registry.counter("cantidadTrasladosRealizados").increment();
 
     }
 
