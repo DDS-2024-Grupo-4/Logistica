@@ -1,6 +1,5 @@
 package ar.edu.utn.dds.k3003.app;
 
-import ar.edu.utn.dds.k3003.Service.DDMetricsUtils;
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
@@ -9,8 +8,6 @@ import ar.edu.utn.dds.k3003.model.Metrica;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
 import ar.edu.utn.dds.k3003.repositories.*;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.datadog.DatadogMeterRegistry;
 import lombok.Getter;
 import lombok.Setter;
 

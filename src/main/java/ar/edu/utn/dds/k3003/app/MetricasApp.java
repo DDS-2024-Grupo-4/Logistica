@@ -4,7 +4,6 @@ package ar.edu.utn.dds.k3003.app;
 import ar.edu.utn.dds.k3003.Service.ApprovalException;
 import ar.edu.utn.dds.k3003.Service.DDMetricsUtils;
 import ar.edu.utn.dds.k3003.Service.TransferDTO;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.Javalin;
 import io.javalin.micrometer.MicrometerPlugin;
 import io.javalin.http.HttpStatus;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Getter
 @Setter
 public class MetricasApp {
-//jdjdjdjk
+
     public static AtomicInteger metricaTrasladosEnCurso;
     public static Counter contadorTrasladosRealizados;
     public static Counter contadorRutasCreadas; //prueba
