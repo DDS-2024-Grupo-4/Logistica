@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Getter
 @Setter
 public class MetricasApp {
-
+//jdjdjdjk
     public static AtomicInteger metricaTrasladosEnCurso;
     public static Counter contadorTrasladosRealizados;
     public static Counter contadorRutasCreadas; //prueba
