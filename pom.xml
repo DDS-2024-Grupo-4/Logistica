@@ -96,6 +96,11 @@
       <version>0.0.22</version>
     </dependency>
     <dependency>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>java-dotenv</artifactId>
+      <version>5.2.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.6.0</version>
@@ -137,6 +142,23 @@
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-datadog</artifactId>
       <version>${micrometer.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.20</version> <!-- Asegúrate de usar la versión correcta -->
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <version>1.8.20</version> <!-- Asegúrate de usar la versión correcta -->
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>1.8.20</version> <!-- Asegúrate de usar la versión correcta -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

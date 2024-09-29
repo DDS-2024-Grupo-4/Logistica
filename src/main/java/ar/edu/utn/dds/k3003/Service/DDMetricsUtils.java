@@ -2,6 +2,7 @@ package ar.edu.utn.dds.k3003.Service;
 
 import java.time.Duration;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmHeapPressureMetrics;
@@ -17,6 +18,8 @@ public class DDMetricsUtils {
     private final DatadogMeterRegistry registry;
 
     public DDMetricsUtils(String appTag) {
+
+        Dotenv dotenv = Dotenv.load();
         var config = new DatadogConfig() {
             @Override
             public Duration step() {
@@ -25,7 +28,7 @@ public class DDMetricsUtils {
 
             @Override
             public String apiKey() {
-                return System.getenv("DDAPI");
+                return dotenv.get("DDAPIKEY");
             }
 
             @Override
