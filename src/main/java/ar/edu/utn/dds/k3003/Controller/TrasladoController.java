@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.Controller;
 
+import ar.edu.utn.dds.k3003.Service.UtilsMetrics;
 import ar.edu.utn.dds.k3003.app.Fachada;
 import ar.edu.utn.dds.k3003.facades.dtos.EstadoTrasladoEnum;
 import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
@@ -62,9 +63,12 @@ public class TrasladoController {
 
             if (nuevoEstado == "ENTREGADO") {
                 this.fachada.trasladoDepositado(idTraslado);
+                UtilsMetrics.enviarNuevoTrasladoRealizado(idTraslado);
+                UtilsMetrics.actualizarTrasladosEnCurso(idTraslado, false);
             }
             if (nuevoEstado == "EN_VIAJE") {
                 this.fachada.trasladoRetirado(idTraslado);
+                UtilsMetrics.actualizarTrasladosEnCurso(idTraslado, true);
             }
         }
         catch(NoSuchElementException ex) {

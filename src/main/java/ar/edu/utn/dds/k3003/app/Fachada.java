@@ -31,8 +31,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
     private final MetricaRepository metricaRepository;
     private FachadaViandas fachadaViandas;
     private FachadaHeladeras fachadaHeladeras;
-    private MetricasApp metricasApp;
-
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
@@ -45,7 +43,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.trasladoMapper = new TrasladoMapper();
         this.trasladoRepository = new TrasladoRepository(entityManager);
         this.metricaRepository = new MetricaRepository(entityManager);
-        this.metricasApp.inicializarMetricas();
+
 
     }
 
@@ -53,8 +51,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
     public RutaDTO agregar(RutaDTO rutaDTO) {
         Ruta ruta = new Ruta(rutaDTO.getColaboradorId(), rutaDTO.getHeladeraIdOrigen(), rutaDTO.getHeladeraIdDestino());
         ruta = this.rutaRepository.save(ruta);
-
-        MetricasApp.contadorRutasCreadas.increment();
         return rutaMapper.map(ruta);
     }
 
@@ -145,7 +141,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
 
         //metricas
         this.metricaRepository.incrementarMetrica("cantidadTrasladosEnCurso");
-        MetricasApp.metricaTrasladosEnCurso.incrementAndGet();
 
     }
     @Override
@@ -167,8 +162,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.metricaRepository.decrementarMetrica("cantidadTrasladosEnCurso");
         this.metricaRepository.incrementarMetrica("cantidadTrasladosRealizados");
 
-        MetricasApp.metricaTrasladosEnCurso.decrementAndGet();
-        MetricasApp.contadorTrasladosRealizados.increment();
 
     }
 
