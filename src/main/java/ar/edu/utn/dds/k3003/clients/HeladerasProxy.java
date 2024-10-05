@@ -4,6 +4,7 @@ import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -21,8 +22,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
         public HeladerasProxy(ObjectMapper objectMapper) {
 
-            var env = System.getenv();
-            this.endpoint = env.getOrDefault("URL_HELADERAS", "http://localhost:8082/");
+            Dotenv dotenv = Dotenv.load();
+            this.endpoint = dotenv.get("URL_HELADERAS");
 
             var retrofit =
                     new Retrofit.Builder()

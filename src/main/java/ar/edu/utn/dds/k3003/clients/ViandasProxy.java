@@ -6,6 +6,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.EstadoViandaEnum;
 import ar.edu.utn.dds.k3003.facades.dtos.ViandaDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -26,8 +27,8 @@ public class ViandasProxy implements FachadaViandas {
 
     public ViandasProxy(ObjectMapper objectMapper) {
 
-        var env = System.getenv();
-        this.endpoint = env.getOrDefault("URL_VIANDAS", "http://localhost:8081/");
+        Dotenv dotenv = Dotenv.load();
+        this.endpoint = dotenv.get("URL_VIANDAS");
 
         var retrofit =
                 new Retrofit.Builder()

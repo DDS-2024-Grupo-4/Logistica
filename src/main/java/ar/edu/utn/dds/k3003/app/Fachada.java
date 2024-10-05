@@ -156,7 +156,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.fachadaViandas.modificarHeladera(trasladoDTO.getQrVianda(), trasladoDTO.getHeladeraDestino());
 
         //cambio el estado del traslado
-        Traslado traslado = trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);
+       this.trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);
 
         //metricas
         this.metricaRepository.decrementarMetrica("cantidadTrasladosEnCurso");
