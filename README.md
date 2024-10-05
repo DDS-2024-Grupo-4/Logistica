@@ -3,7 +3,7 @@
 
 Template para TP DDS 2024 - Entrega 1
 
-deploy link: https://dashboard.render.com/web/srv-crsur6lds78s73e9m2tg/deploys/dep-cruqul5svqrc7389dfjg
+deploy link: https://logistica-3vjf.onrender.com
 deploy base de datos: https://dashboard.render.com/d/dpg-cpkvhbq0si5c73d322t0-a/logs
 
 
