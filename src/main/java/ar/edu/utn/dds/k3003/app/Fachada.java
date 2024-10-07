@@ -4,7 +4,6 @@ import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
-import ar.edu.utn.dds.k3003.model.Metrica;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
 import ar.edu.utn.dds.k3003.repositories.*;
@@ -23,12 +22,10 @@ import java.util.stream.Collectors;
 @Setter
 public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
 
-//
     private final RutaRepository rutaRepository;
     private final RutaMapper rutaMapper;
     private final TrasladoRepository trasladoRepository;
     private final TrasladoMapper trasladoMapper;
-    private final MetricaRepository metricaRepository;
     private FachadaViandas fachadaViandas;
     private FachadaHeladeras fachadaHeladeras;
 
@@ -42,9 +39,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.rutaMapper = new RutaMapper();
         this.trasladoMapper = new TrasladoMapper();
         this.trasladoRepository = new TrasladoRepository(entityManager);
-        this.metricaRepository = new MetricaRepository(entityManager);
-
-
     }
 
     @Override
@@ -54,12 +48,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         return rutaMapper.map(ruta);
     }
 
-    public Metrica agregarMetrica(Metrica metrica) {
-        metrica = this.metricaRepository.save(metrica);
-        return metrica;
-    }
-
-
     @Override
     public TrasladoDTO buscarXId(Long aLong) throws NoSuchElementException { //el traslado
         Traslado traslado = trasladoRepository.findById(aLong);
@@ -67,12 +55,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         TrasladoDTO trasDto = trasladoMapper.map(traslado);
 
         return trasDto;
-    }
-
-    public Metrica buscarMetricaXNombre(String nombreMetrica) throws NoSuchElementException { //el traslado
-        Metrica metrica = metricaRepository.findByNombre(nombreMetrica);
-
-        return metrica;
     }
 
     @Override
@@ -131,17 +113,12 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         TrasladoDTO trasladoDto = buscarXId(aLong);
 
         //genero el retiroDto
-        RetiroDTO retiroHeladera = new RetiroDTO(trasladoDto.getQrVianda(), "123", trasladoDto.getHeladeraOrigen());
-
-        fachadaHeladeras.retirar(retiroHeladera);
+        //RetiroDTO retiroHeladera = new RetiroDTO(trasladoDto.getQrVianda(), "123", trasladoDto.getHeladeraOrigen());
+        //fachadaHeladeras.retirar(retiroHeladera);
 
         //ahora cambio el estado de la vianda
         fachadaViandas.modificarEstado(trasladoDto.getQrVianda(), EstadoViandaEnum.EN_TRASLADO);
         this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
-
-        //metricas
-       // this.metricaRepository.incrementarMetrica("trasladosEnCurso");
-
     }
     @Override
     public void trasladoDepositado(Long aLong) {
@@ -149,20 +126,14 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         TrasladoDTO trasladoDTO = buscarXId(aLong);
 
         //la deposito en la heladera
-        //fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), trasladoDTO.getQrVianda());
+        fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), trasladoDTO.getQrVianda());
 
         //cambio el estado de la vianda
         fachadaViandas.modificarEstado(trasladoDTO.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
         fachadaViandas.modificarHeladera(trasladoDTO.getQrVianda(), trasladoDTO.getHeladeraDestino());
 
-
         //cambio el estado del traslado
        this.trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);
-
-        //metricas
-       // this.metricaRepository.decrementarMetrica("trasladosEnCurso");
-        //this.metricaRepository.incrementarMetrica("trasladosFinalizados");
-
 
     }
 
@@ -173,10 +144,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
     public void borrarTraslados(){
 
         this.trasladoRepository.borrarTraslados();
-    }
-
-    public void borrarMetricas(){
-        this.metricaRepository.borrarMetricas();
     }
 
     public void borrarRutas(){

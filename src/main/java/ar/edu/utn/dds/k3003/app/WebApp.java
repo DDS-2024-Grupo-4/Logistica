@@ -1,6 +1,5 @@
 package ar.edu.utn.dds.k3003.app;
 
-import ar.edu.utn.dds.k3003.Controller.MetricaController;
 import ar.edu.utn.dds.k3003.Controller.RutaController;
 import ar.edu.utn.dds.k3003.Controller.TrasladoController;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.Javalin;
 
-import java.nio.channels.Channel;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -36,18 +34,14 @@ public class WebApp {
 
         var rutaController = new RutaController(fachada);
         var trasladosController = new TrasladoController(fachada);
-        var metricaController = new MetricaController(fachada);
 
         app.post("/rutas", rutaController::agregar);
         app.post("/traslados", trasladosController::asignar);
-        app.post("/metricas", metricaController :: agregar);
-        app.get("/metricas/search/findByNombre", metricaController::obtenerMetrica);
         app.get("/rutas", rutaController::obtenerTodas);
         app.get("/traslados/{id}", trasladosController::obtener);
         app.get( "/traslados/search/findByColaboradorId", trasladosController::ObtenerTrasladosColaborador);
         app.patch("/traslados/{id}", trasladosController::modificarEstado);
         app.delete("/traslados", trasladosController::deleteAll);
-        app.delete("/metricas", metricaController::deleteAllMetricas);
         app.delete("/rutas", rutaController::deleteAllRutas);
 
     }
