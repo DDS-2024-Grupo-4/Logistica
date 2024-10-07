@@ -42,7 +42,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
         @Override
         public void depositar(Integer integer, String s) throws NoSuchElementException {
-            try {
+        /*    try {
                 Response<Void> response = service.depositar(integer,s).execute();
 
                 if (!response.isSuccessful()) {
@@ -55,6 +55,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
             } catch (IOException e) {
                 throw new RuntimeException("Error en la comunicación con el servicio de heladeras", e);
             }
+
+         */
         }
 
         @Override
