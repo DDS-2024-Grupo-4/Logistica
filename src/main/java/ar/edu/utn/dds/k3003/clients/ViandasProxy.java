@@ -49,7 +49,7 @@ public class ViandasProxy implements FachadaViandas {
     @Override
     public ViandaDTO modificarEstado(String s, EstadoViandaEnum estadoViandaEnum){
        ViandaDTO viandaDto = this.buscarXQR(s);
-       viandaDto.setEstado(estadoViandaEnum);
+       modificarEstado(s, estadoViandaEnum);
 
        return viandaDto;
     }
