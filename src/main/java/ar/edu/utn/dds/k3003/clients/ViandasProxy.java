@@ -24,6 +24,7 @@ public class ViandasProxy implements FachadaViandas {
     private final String endpoint;
     private final ViandasRetrofitClient service;
     private static ViandasProxy instancia = null;
+    private FachadaViandas fachadaViandas;
 
     public ViandasProxy(ObjectMapper objectMapper) {
 
@@ -49,26 +50,15 @@ public class ViandasProxy implements FachadaViandas {
     @Override
     public ViandaDTO modificarEstado(String s, EstadoViandaEnum estadoViandaEnum){
        ViandaDTO viandaDto = this.buscarXQR(s);
-       modificarEstado(s, estadoViandaEnum);
-
+       // Response<ViandaDTO> response = service.modificarEstado().execute();
+        viandaDto.setEstado(estadoViandaEnum);
+        System.out.println("paso la modificacion de estado");
        return viandaDto;
     }
 
     @Override
-    public List<ViandaDTO> viandasDeColaborador(Long aLong, Integer integer, Integer integer1)
-            //busca todas las viandas del colaborador
-            throws NoSuchElementException {
-        try {
-            Response<List<ViandaDTO>> response = service.buscarViandasColaborador(aLong, integer, integer1).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            } else {
-                throw new RuntimeException("Error al buscar viandas del colaborador: " + aLong);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+    public List<ViandaDTO> viandasDeColaborador(Long aLong, Integer integer, Integer integer1){
+        return null;
     }
 
     @SneakyThrows
@@ -83,8 +73,6 @@ public class ViandasProxy implements FachadaViandas {
             throw new NoSuchElementException("no se encontro la vianda " + qr);
         }
         throw new RuntimeException("Error conectandose con el componente viandas");
-
-        //aca deberia guardarme la vianda que busco?
     }
 
     @Override
@@ -99,9 +87,10 @@ public class ViandasProxy implements FachadaViandas {
 
     @Override
     public ViandaDTO modificarHeladera(String s, int i) {
-        //cambiarle la heladera a la vianda
+        System.out.println("entro a modificar heladera");
         try {
             Response<ViandaDTO> response = service.modificarHeladeraVianda(s,i).execute();
+            System.out.println("ejecuto el response");
             if (response.isSuccessful()) {
                 return response.body();
             } else if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
@@ -112,5 +101,6 @@ public class ViandasProxy implements FachadaViandas {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 }

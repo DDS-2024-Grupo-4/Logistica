@@ -10,8 +10,8 @@ public interface HeladerasRetrofitClient {
     @POST("/retiros")
     Call<Void> retirar(@Body RetiroDTO retiro);
 
-   // @POST("/depositos")
-  //  Call<Void> depositar(Integer heladeraID, String qrVianda);
+    @POST("/depositos")
+    Call<Void> depositar(Integer heladeraID, String qrVianda);
 
 
 }
