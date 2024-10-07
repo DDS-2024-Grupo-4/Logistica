@@ -49,11 +49,18 @@ public class ViandasProxy implements FachadaViandas {
 
     @Override
     public ViandaDTO modificarEstado(String s, EstadoViandaEnum estadoViandaEnum){
-       ViandaDTO viandaDto = this.buscarXQR(s);
-       // Response<ViandaDTO> response = service.modificarEstado().execute();
-        viandaDto.setEstado(estadoViandaEnum);
-        System.out.println("paso la modificacion de estado");
-       return viandaDto;
+        try {
+            Response<ViandaDTO> response = service.modificarEstado(s,estadoViandaEnum).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
+                throw new NoSuchElementException("No se encontró la vianda con el código QR: " + s);
+            }else {
+                throw new NoSuchElementException("no se pudo modificar la vianda");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

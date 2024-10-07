@@ -43,7 +43,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
         @Override
         public void depositar(Integer integer, String s) throws NoSuchElementException {
 
-
             try {
                 Response<Void> response = service.depositar(integer,s).execute();
 
