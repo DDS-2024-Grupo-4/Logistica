@@ -149,7 +149,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         TrasladoDTO trasladoDTO = buscarXId(aLong);
 
         //la deposito en la heladera
-        fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), trasladoDTO.getQrVianda());
+        //fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), trasladoDTO.getQrVianda());
 
         //cambio el estado de la vianda
         fachadaViandas.modificarEstado(trasladoDTO.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
