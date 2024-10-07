@@ -94,19 +94,7 @@ public class ViandasProxy implements FachadaViandas {
 
     @Override
     public boolean evaluarVencimiento(String s) throws NoSuchElementException {
-        try {
-            Response<Boolean> response = service.viandaVencida(s).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            else if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
-                throw new NoSuchElementException("No se encontró la vianda con el código QR: " + s);
-            } else {
-                throw new RuntimeException("Error al evaluar el vencimiento de la vianda");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+       return true;
     }
 
     @Override

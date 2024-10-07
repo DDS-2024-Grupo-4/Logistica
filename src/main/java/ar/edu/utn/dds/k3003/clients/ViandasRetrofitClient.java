@@ -16,11 +16,8 @@ public interface ViandasRetrofitClient {
     @GET("/viandas/search/findByColaboradorIdAndAnioAndMes")
     Call<List<ViandaDTO>> buscarViandasColaborador(@Path("colabId") Long colabId, @Path("mes") Integer mes, @Path("anio") Integer anio);
 
-    @GET("/viandas/{qr}/vencida")
-    Call<Boolean> viandaVencida(@Path("qr") String qr);
-
     @PATCH("viandas/{qrVianda}")
-    Call<ViandaDTO> modificarHeladeraVianda(@Path("qrVianda") String qrVianda, @Query("idHeladera") Integer idHeladera); //verlo con viandas
+    Call<ViandaDTO> modificarHeladeraVianda(@Path("qrVianda") String qrVianda, @Query("idHeladera") Integer idHeladera);
 }
 
 

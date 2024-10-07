@@ -140,7 +140,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
 
         //metricas
-        this.metricaRepository.incrementarMetrica("trasladosEnCurso");
+       // this.metricaRepository.incrementarMetrica("trasladosEnCurso");
 
     }
     @Override
@@ -155,12 +155,13 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.fachadaViandas.modificarEstado(trasladoDTO.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
         this.fachadaViandas.modificarHeladera(trasladoDTO.getQrVianda(), trasladoDTO.getHeladeraDestino());
 
+
         //cambio el estado del traslado
        this.trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);
 
         //metricas
-        this.metricaRepository.decrementarMetrica("trasladosEnCurso");
-        this.metricaRepository.incrementarMetrica("trasladosFinalizados");
+       // this.metricaRepository.decrementarMetrica("trasladosEnCurso");
+        //this.metricaRepository.incrementarMetrica("trasladosFinalizados");
 
 
     }

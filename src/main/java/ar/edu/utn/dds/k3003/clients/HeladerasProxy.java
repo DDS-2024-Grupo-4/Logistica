@@ -8,6 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import lombok.SneakyThrows;
@@ -41,7 +42,19 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
         @Override
         public void depositar(Integer integer, String s) throws NoSuchElementException {
+            try {
+                Response<Void> response = service.depositar(integer,s).execute();
 
+                if (!response.isSuccessful()) {
+                    if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
+                        throw new NoSuchElementException("No se encontró la heladera para el deposito: " + integer);
+                    } else {
+                        throw new RuntimeException("Error al realizar el deposito: " + response.errorBody().string());
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error en la comunicación con el servicio de heladeras", e);
+            }
         }
 
         @Override
@@ -51,6 +64,19 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
         @Override
         public void retirar(RetiroDTO retiroDTO) throws NoSuchElementException {
+            try {
+                Response<Void> response = service.retirar(retiroDTO).execute();
+
+                if (!response.isSuccessful()) {
+                    if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
+                        throw new NoSuchElementException("No se encontró la heladera para el retiro: " + retiroDTO.getHeladeraId());
+                    } else {
+                        throw new RuntimeException("Error al realizar el retiro: " + response.errorBody().string());
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error en la comunicación con el servicio de heladeras", e);
+            }
         }
 
         @Override
