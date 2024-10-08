@@ -113,8 +113,8 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         TrasladoDTO trasladoDto = buscarXId(aLong);
 
         //genero el retiroDto
-        //RetiroDTO retiroHeladera = new RetiroDTO(trasladoDto.getQrVianda(), "123", trasladoDto.getHeladeraOrigen());
-        //fachadaHeladeras.retirar(retiroHeladera);
+        RetiroDTO retiroHeladera = new RetiroDTO(trasladoDto.getQrVianda(), "123", trasladoDto.getHeladeraOrigen());
+        fachadaHeladeras.retirar(retiroHeladera);
 
         //ahora cambio el estado de la vianda
         fachadaViandas.modificarEstado(trasladoDto.getQrVianda(), EstadoViandaEnum.EN_TRASLADO);

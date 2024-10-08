@@ -30,6 +30,7 @@ public class RutaRepository {
             entityManager.getTransaction().begin();
             entityManager.persist(ruta);
             entityManager.getTransaction().commit();
+            entityManager.close();
         }
         return ruta;
     }
@@ -60,6 +61,7 @@ public class RutaRepository {
         entityManager.getTransaction().begin();
         entityManager.createQuery("DELETE FROM Ruta").executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
 }

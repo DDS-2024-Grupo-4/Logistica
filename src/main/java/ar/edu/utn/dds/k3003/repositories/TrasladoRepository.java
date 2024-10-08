@@ -29,6 +29,7 @@ public class TrasladoRepository {
             entityManager.getTransaction().begin();
             entityManager.persist(traslado);
             entityManager.getTransaction().commit();
+            entityManager.close();
         }
         return traslado;
     }
@@ -69,6 +70,7 @@ public class TrasladoRepository {
         Traslado traslado = findById(id);
         traslado.setEstado(estadoNuevo);
         entityManager.getTransaction().commit();
+        entityManager.close();
 
         return traslado;
     }
@@ -77,6 +79,7 @@ public class TrasladoRepository {
         entityManager.getTransaction().begin();
         entityManager.createQuery("DELETE FROM Traslado").executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
 }
