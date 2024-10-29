@@ -3,7 +3,7 @@ package ar.edu.utn.dds.k3003.Controller;
 import ar.edu.utn.dds.k3003.Service.UtilsMetrics;
 import ar.edu.utn.dds.k3003.app.Fachada;
 import ar.edu.utn.dds.k3003.facades.dtos.EstadoTrasladoEnum;
-import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
+import ar.edu.utn.dds.k3003.Utils.TrasladoDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
@@ -21,7 +21,8 @@ public class TrasladoController {
         try {
             var trasladoDTO = this.fachada.asignarTraslado(context.bodyAsClass(TrasladoDTO.class));
             context.json(trasladoDTO);
-        } catch (TrasladoNoAsignableException | NoSuchElementException e) {
+        } catch (NoSuchElementException |
+                 ar.edu.utn.dds.k3003.exceptions.TrasladoNoAsignableException e) {
             context.result(e.getLocalizedMessage());
             context.status(HttpStatus.BAD_REQUEST);
         }

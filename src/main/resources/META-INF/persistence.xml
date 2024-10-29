@@ -17,9 +17,9 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd" version="2.2">
 
             <property name="hibernate.dialect" value = "org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-crhkr13v2p9s73bcbim0-a.oregon-postgres.render.com:5432/entrega3_tp_dds_vjr2"/>
-            <property name="javax.persistence.jdbc.user" value="entrega3_tp_dds_vjr2_user"/>
-            <property name="javax.persistence.jdbc.password" value="oSbYjtcUhhmInbawWRpwTyHwse2effoF" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-csgkah88fa8c73a17250-a.oregon-postgres.render.com:5432/entrega3_tp_dds_f9el"/>
+            <property name="javax.persistence.jdbc.user" value="entrega3_tp_dds_f9el_user"/>
+            <property name="javax.persistence.jdbc.password" value="MORxP5sVJJRDGWlrtPm9cZaV51JcoPLq" />
 
 
             <!-- Creación de tablas -->

@@ -3,7 +3,8 @@ package ar.edu.utn.dds.k3003.app;
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
-import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
+import ar.edu.utn.dds.k3003.Utils.TrasladoDTO;
+import ar.edu.utn.dds.k3003.exceptions.TrasladoNoAsignableException;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
 import ar.edu.utn.dds.k3003.repositories.*;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
+public class Fachada {
 
     private final RutaRepository rutaRepository;
     private final RutaMapper rutaMapper;
@@ -41,14 +43,14 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         this.trasladoRepository = new TrasladoRepository(entityManager);
     }
 
-    @Override
+
     public RutaDTO agregar(RutaDTO rutaDTO) {
         Ruta ruta = new Ruta(rutaDTO.getColaboradorId(), rutaDTO.getHeladeraIdOrigen(), rutaDTO.getHeladeraIdDestino());
         ruta = this.rutaRepository.save(ruta);
         return rutaMapper.map(ruta);
     }
 
-    @Override
+
     public TrasladoDTO buscarXId(Long aLong) throws NoSuchElementException { //el traslado
         Traslado traslado = trasladoRepository.findById(aLong);
 
@@ -57,13 +59,27 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         return trasDto;
     }
 
-    @Override
+
     public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
 
-        ViandaDTO viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
-        if (viandaDTO == null) {
-            throw new TrasladoNoAsignableException("No se encontró la vianda con el QR proporcionado");
-        }
+        List<String> viandasATrasladar = new ArrayList<>();
+
+        trasladoDTO.getListQrViandas().forEach(qrVianda -> {
+            ViandaDTO viandaDTO = fachadaViandas.buscarXQR(qrVianda);
+
+            // Si alguna vianda no se encuentra, lanza la excepción
+            if (viandaDTO == null) {
+                try {
+                    throw new TrasladoNoAsignableException("No se encontró la vianda con el QR proporcionado: " + qrVianda);
+                } catch (TrasladoNoAsignableException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+            // Agrega el código QR de la vianda encontrada a la lista
+            viandasATrasladar.add(viandaDTO.getCodigoQR());
+        });
 
         List<Ruta> rutasPosibles = this.rutaRepository.findByHeladeras(trasladoDTO.getHeladeraOrigen(), trasladoDTO.getHeladeraDestino());
         if (rutasPosibles == null || rutasPosibles.isEmpty()) {
@@ -73,16 +89,14 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         Collections.shuffle(rutasPosibles);
 
         Ruta ruta = rutasPosibles.get(0);
-        Traslado traslado = trasladoRepository.save(new Traslado(viandaDTO.getCodigoQR(), ruta,
+        Traslado traslado = trasladoRepository.save(new Traslado(viandasATrasladar, ruta,
                 EstadoTrasladoEnum.ASIGNADO, trasladoDTO.getFechaTraslado()));
-
-
 
         return this.trasladoMapper.map(traslado);
     }
 
 
-    @Override
+
     public List<TrasladoDTO> trasladosDeColaborador(Long aLong, Integer integer, Integer integer1) {
         List<Traslado> trasladosDeColaborador = this.trasladoRepository.findByColaboradorId(aLong,integer,integer);
         List<Traslado> trasladosPorMesYAnio = trasladosDeColaborador.stream()
@@ -97,16 +111,17 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         return trasDtos;
     }
 
-    @Override
+
     public void setHeladerasProxy(FachadaHeladeras fachadaHeladeras) {
             this.fachadaHeladeras = fachadaHeladeras;
     }
 
-    @Override
+
     public void setViandasProxy(FachadaViandas fachadaViandas) {
         this.fachadaViandas = fachadaViandas;
     }
 
+    /*
     @Override
     public void trasladoRetirado(Long aLong) {
         //primero busco el id del traslado
@@ -120,17 +135,46 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica{
         fachadaViandas.modificarEstado(trasladoDto.getQrVianda(), EstadoViandaEnum.EN_TRASLADO);
         this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
     }
-    @Override
+
+     */
+
+    public void trasladoRetirado(Long aLong) {
+        TrasladoDTO trasladoDto = buscarXId(aLong);
+
+        List<RetiroDTO> retiros = new ArrayList<>();
+
+        //genero el retiroDto por cada vianda
+        trasladoDto.getListQrViandas().forEach(qrVianda -> {
+            RetiroDTO retiroHeladera = new RetiroDTO(qrVianda, "123", trasladoDto.getHeladeraOrigen());
+            retiros.add(retiroHeladera); // Agrega el retiro a la lista
+        });
+
+        //hago los retiros
+        retiros.forEach(retiro -> fachadaHeladeras.retirar(retiro));
+
+        //ahora cambio el estado de la vianda por cada vianda que contiene el traslado
+        trasladoDto.getListQrViandas().forEach(qrVianda -> fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.EN_TRASLADO));
+
+        this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
+    }
+
+
+
+
     public void trasladoDepositado(Long aLong) {
         //es un traslado que ya fue creado en trasladoRetirado y ahora lo tengo que buscar
         TrasladoDTO trasladoDTO = buscarXId(aLong);
 
-        //la deposito en la heladera
-        fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), trasladoDTO.getQrVianda());
+        //la deposito en la heladera cada vianda
+        trasladoDTO.getListQrViandas().forEach(qrVianda -> fachadaHeladeras.depositar(trasladoDTO.getHeladeraDestino(), qrVianda));
 
-        //cambio el estado de la vianda
-        fachadaViandas.modificarEstado(trasladoDTO.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
-        fachadaViandas.modificarHeladera(trasladoDTO.getQrVianda(), trasladoDTO.getHeladeraDestino());
+
+        //cambio el estado y la heladera de destino de cada vianda
+        trasladoDTO.getListQrViandas().forEach(qrVianda -> {
+            fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.DEPOSITADA);
+            fachadaViandas.modificarHeladera(qrVianda, trasladoDTO.getHeladeraDestino());
+        });
+
 
         //cambio el estado del traslado
        this.trasladoRepository.modificarEstado(aLong, EstadoTrasladoEnum.ENTREGADO);

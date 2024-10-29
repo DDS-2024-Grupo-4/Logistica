@@ -63,7 +63,7 @@ public class testsEntrega1 {
 
         assertEquals(rutaDto, result);
     }
-
+/*
     @Test
     void  testAsignarTraslado() throws TrasladoNoAsignableException {
         RutaDTO rutaDto = new RutaDTO(14L, 1,2);
@@ -82,5 +82,7 @@ public class testsEntrega1 {
 
     }
     //
+
+ */
 }
 

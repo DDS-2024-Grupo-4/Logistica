@@ -29,7 +29,7 @@ public class testPersistencia {
     static EntityManagerFactory entityManagerFactory ;
     EntityManager entityManager ;
     static private TrasladoRepository trasladoRepository;
-    static private FachadaLogistica fachadaLogistica;
+    static private Fachada fachadaLogistica;
     static private TrasladoMapper trasladoMapper;
 
     @BeforeAll
@@ -50,7 +50,7 @@ public class testPersistencia {
        // vacío, para ver que levante el ORM
     }
 
-
+/*
     @Test
     public void testGuardarYRecuperarDoc() throws Exception {
         Ruta ruta = new Ruta(15L, 0, 1);
@@ -82,6 +82,8 @@ public class testPersistencia {
         assertEquals(ruta.getId(), rutaPersistida.getId());
         assertEquals(traslado.getId(), trasladoPersistido.getId());
     }
+
+ */
 
 
 

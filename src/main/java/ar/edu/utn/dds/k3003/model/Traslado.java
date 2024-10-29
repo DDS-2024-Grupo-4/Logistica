@@ -18,8 +18,10 @@ public class Traslado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ElementCollection
+    @CollectionTable(name = "traslado_viandas", joinColumns = @JoinColumn(name = "traslado_id"))
     @Column(name = "qr_vianda")
-    private String qrVianda;
+    private List<String> listaQrVianda; //porque ahora puede llevar varias viandas
     @Enumerated(EnumType.STRING)
     @Column(name = "estado")
     private EstadoTrasladoEnum estado;
@@ -30,8 +32,8 @@ public class Traslado {
     private Ruta ruta;
 
 
-    public Traslado(String qr, Ruta ruta, EstadoTrasladoEnum estado, LocalDateTime fecha){
-            this.qrVianda = qr;
+    public Traslado(List<String> qrs, Ruta ruta, EstadoTrasladoEnum estado, LocalDateTime fecha){
+            this.listaQrVianda = qrs;
             this.estado = estado;
             this.fechaTraslado = fecha;
             this.ruta = ruta;
