@@ -91,4 +91,8 @@ public class TrasladoDTO {
         this.colaboradorId = colaboradorId;
     }
 
+    public TrasladoDTO(){
+
+    }
+
 }
