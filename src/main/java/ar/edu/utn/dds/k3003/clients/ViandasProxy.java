@@ -98,15 +98,18 @@ public class ViandasProxy implements FachadaViandas {
 
     @Override
     public ViandaDTO modificarHeladera(String s, int i) {
-        System.out.println("entro a modificar heladera");
         try {
+            System.out.println("entro a modificar heladera con el qr: " + s + " y la heladera: " + i);
             Response<ViandaDTO> response = service.modificarHeladeraVianda(s,i).execute();
-            System.out.println("ejecuto el response");
             if (response.isSuccessful()) {
+                System.out.println("response succesfull" );
                 return response.body();
             } else if (response.code() == HttpStatus.NOT_FOUND.getCode()) {
                 throw new NoSuchElementException("No se encontró la vianda con el código QR: " + s);
             }else {
+                System.out.println("Error al modificar la heladera de la vianda.");
+                System.out.println("Código de estado HTTP: " + response.code());
+                System.out.println("Mensaje de error: " + response.errorBody().string());
                 throw new NoSuchElementException("no se pudo modificar la heladera de la vianda");
             }
         } catch (IOException e) {

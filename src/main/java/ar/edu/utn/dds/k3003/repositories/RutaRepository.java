@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -30,7 +32,6 @@ public class RutaRepository {
             entityManager.getTransaction().begin();
             entityManager.persist(ruta);
             entityManager.getTransaction().commit();
-            entityManager.close();
         }
         return ruta;
     }
