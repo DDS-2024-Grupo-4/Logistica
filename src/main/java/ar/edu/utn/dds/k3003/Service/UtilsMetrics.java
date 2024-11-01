@@ -33,7 +33,6 @@ public class UtilsMetrics {
     public static void actualizarTrasladosEnCurso(Long trasladoId, boolean aumentar) {
         Dotenv dotenv = Dotenv.load();
         var url = dotenv.get("URL_METRICS_2");
-        HttpClient client = HttpClient.newHttpClient();
 
         if (aumentar) {
             url = url + "/incrementar";
@@ -41,10 +40,8 @@ public class UtilsMetrics {
             url = url + "/disminuir";
         }
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
