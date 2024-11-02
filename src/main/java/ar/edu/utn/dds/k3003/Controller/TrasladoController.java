@@ -64,12 +64,13 @@ public class TrasladoController {
 
             if (nuevoEstado == "ENTREGADO") {
                 this.fachada.trasladoDepositado(idTraslado);
-                UtilsMetrics.enviarNuevoTrasladoRealizado(idTraslado);
+                UtilsMetrics.enviarNuevoTrasladoRealizado();
                 UtilsMetrics.actualizarTrasladosEnCurso(idTraslado, false);
             }
             if (nuevoEstado == "EN_VIAJE") {
-                this.fachada.trasladoRetirado(idTraslado);
                 UtilsMetrics.actualizarTrasladosEnCurso(idTraslado, true);
+                this.fachada.trasladoRetirado(idTraslado);
+
             }
         }
         catch(NoSuchElementException ex) {

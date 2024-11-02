@@ -16,8 +16,8 @@ public interface HeladerasRetrofitClient {
     @POST("/retiros")
     Call<Void> retirar(@Body RetiroDTO retiro);
 
-   // @POST("/depositos")
-    //Call<Void> depositar(@ DepositoDTO deposito);
+    @POST("/depositos")
+    Call<Void> depositar(@Path("heladeraId") Integer heladeraId, @Path("qrVainda") String qrVianda);
 
 
 }

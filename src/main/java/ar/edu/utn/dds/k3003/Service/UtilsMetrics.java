@@ -8,16 +8,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class UtilsMetrics {
-    public static void enviarNuevoTrasladoRealizado(Long trasladoId) {
+    public static void enviarNuevoTrasladoRealizado() {
         Dotenv dotenv = Dotenv.load();
         var url = dotenv.get("URL_METRICS_1");
-        url = url + trasladoId;
-        HttpClient client = HttpClient.newHttpClient();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
