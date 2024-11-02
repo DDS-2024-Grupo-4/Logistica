@@ -13,7 +13,7 @@ public interface HeladerasRetrofitClient {
     @POST("/retiros")
     Call<Void> retirar(@Body RetiroDTO retiro);
 
-    @POST("/depositos")
+    @POST("/depositos/{heladeraId}/{qrVianda}")
     Call<Void> depositar(@Path("heladeraId") Integer heladeraId, @Path("qrVianda") String qrVianda);
 
 
