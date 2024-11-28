@@ -121,23 +121,6 @@ public class Fachada {
         this.fachadaViandas = fachadaViandas;
     }
 
-    /*
-    @Override
-    public void trasladoRetirado(Long aLong) {
-        //primero busco el id del traslado
-        TrasladoDTO trasladoDto = buscarXId(aLong);
-
-        //genero el retiroDto
-        RetiroDTO retiroHeladera = new RetiroDTO(trasladoDto.getQrVianda(), "123", trasladoDto.getHeladeraOrigen());
-        fachadaHeladeras.retirar(retiroHeladera);
-
-        //ahora cambio el estado de la vianda
-        fachadaViandas.modificarEstado(trasladoDto.getQrVianda(), EstadoViandaEnum.EN_TRASLADO);
-        this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
-    }
-
-     */
-
     public void trasladoRetirado(Long aLong) {
         TrasladoDTO trasladoDto = buscarXId(aLong);
 
