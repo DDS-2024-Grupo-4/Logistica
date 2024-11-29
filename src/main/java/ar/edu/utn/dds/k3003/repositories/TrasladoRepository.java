@@ -75,7 +75,8 @@ public class TrasladoRepository {
 
     public void borrarTraslados() {
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Traslado").executeUpdate();
+        entityManager.createQuery("DELETE FROM traslado_viandas").executeUpdate();
+        entityManager.createQuery("DELETE FROM traslados").executeUpdate();
         entityManager.getTransaction().commit();
         entityManager.close();
     }

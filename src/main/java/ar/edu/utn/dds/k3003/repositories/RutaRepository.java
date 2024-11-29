@@ -69,7 +69,7 @@ public class RutaRepository {
 
     public void borrarRutas() {
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Ruta").executeUpdate();
+        entityManager.createQuery("DELETE FROM rutas").executeUpdate();
         entityManager.getTransaction().commit();
         entityManager.close();
     }
