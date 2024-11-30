@@ -142,8 +142,6 @@ public class Fachada {
     }
 
 
-
-
     public void trasladoDepositado(Long aLong) {
         //es un traslado que ya fue creado en trasladoRetirado y ahora lo tengo que buscar
         TrasladoDTO trasladoDTO = buscarXId(aLong);
