@@ -27,6 +27,7 @@ public class WebApp {
 
         fachada.setViandasProxy(new ar.edu.utn.dds.k3003.clients.ViandasProxy(objectMapper));
         fachada.setHeladerasProxy(new ar.edu.utn.dds.k3003.clients.HeladerasProxy(objectMapper));
+        fachada.setColaboradoresProxy(new ar.edu.utn.dds.k3003.clients.ColaboradorProxy(objectMapper));
 
         var port = Integer.parseInt(dotenv.get("PORT"));
 

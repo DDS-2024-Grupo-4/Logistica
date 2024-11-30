@@ -1,5 +1,8 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.Service.FachadaColaboradoresModificada;
+import ar.edu.utn.dds.k3003.Service.FormasDeColaborarEnum;
+import ar.edu.utn.dds.k3003.facades.FachadaColaboradores;
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
@@ -8,12 +11,15 @@ import ar.edu.utn.dds.k3003.exceptions.TrasladoNoAsignableException;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
 import ar.edu.utn.dds.k3003.repositories.*;
+import io.javalin.http.HttpStatus;
 import lombok.Getter;
 import lombok.Setter;
+import retrofit2.Response;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +36,7 @@ public class Fachada {
     private final TrasladoMapper trasladoMapper;
     private FachadaViandas fachadaViandas;
     private FachadaHeladeras fachadaHeladeras;
+    private FachadaColaboradoresModificada fachadaColaboradores;
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
@@ -44,9 +51,21 @@ public class Fachada {
     }
 
 
-    public RutaDTO agregar(RutaDTO rutaDTO) {
+    public RutaDTO agregar(RutaDTO rutaDTO) throws IllegalArgumentException{
+
         Ruta ruta = new Ruta(rutaDTO.getColaboradorId(), rutaDTO.getHeladeraIdOrigen(), rutaDTO.getHeladeraIdDestino());
-        ruta = this.rutaRepository.save(ruta);
+        try {
+            if(fachadaColaboradores.obtenerFormasColaborar(rutaDTO.getColaboradorId()).contains(FormasDeColaborarEnum.TRANSPORTADOR)){
+                ruta = this.rutaRepository.save(ruta);
+            } else{
+                throw new IllegalArgumentException("No se puede crear la ruta porque el colaborador no es un transportador");
+            }
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al guardar la ruta: " + e.getMessage(), e);
+        }
+
         return rutaMapper.map(ruta);
     }
 
@@ -119,6 +138,10 @@ public class Fachada {
 
     public void setViandasProxy(FachadaViandas fachadaViandas) {
         this.fachadaViandas = fachadaViandas;
+    }
+
+    public void setColaboradoresProxy(FachadaColaboradoresModificada fachadaColaboradores) {
+        this.fachadaColaboradores = fachadaColaboradores;
     }
 
     public void trasladoRetirado(Long aLong) {

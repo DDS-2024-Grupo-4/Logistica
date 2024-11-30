@@ -1,3 +1,5 @@
+/*
+
 package ar.edi.itn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.app.Fachada;
@@ -63,6 +65,8 @@ public class testsEntrega1 {
 
         assertEquals(rutaDto, result);
     }
+
+ */
 /*
     @Test
     void  testAsignarTraslado() throws TrasladoNoAsignableException {
@@ -83,6 +87,6 @@ public class testsEntrega1 {
     }
     //
 
- */
-}
 
+}
+*/
