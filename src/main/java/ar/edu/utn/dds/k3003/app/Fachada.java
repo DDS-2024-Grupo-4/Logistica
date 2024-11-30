@@ -136,7 +136,7 @@ public class Fachada {
         retiros.forEach(retiro -> fachadaHeladeras.retirar(retiro));
 
         //ahora cambio el estado de la vianda por cada vianda que contiene el traslado
-        //trasladoDto.getListQrViandas().forEach(qrVianda -> fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.EN_TRASLADO));
+        trasladoDto.getListQrViandas().forEach(qrVianda -> fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.EN_TRASLADO));
 
         this.trasladoRepository.modificarEstado(aLong,EstadoTrasladoEnum.EN_VIAJE);
     }
@@ -154,7 +154,7 @@ public class Fachada {
 
         //cambio el estado y la heladera de destino de cada vianda
         trasladoDTO.getListQrViandas().forEach(qrVianda -> {
-           // fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.DEPOSITADA);
+            fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.DEPOSITADA);
             fachadaViandas.modificarHeladera(qrVianda, trasladoDTO.getHeladeraDestino());
         });
 
