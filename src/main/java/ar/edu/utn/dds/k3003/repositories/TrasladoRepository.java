@@ -73,12 +73,29 @@ public class TrasladoRepository {
         return traslado;
     }
 
+    public Long maximoId(){
+
+        Long maxTrasladoId = (Long) entityManager.createQuery("SELECT MAX(t.id) FROM Traslado t")
+                .getSingleResult();
+
+        return maxTrasladoId;
+    }
+
+    public void borrarTraslado_Viandas(Long trasladoId){
+        entityManager.getTransaction().begin();
+        String jpql = "DELETE FROM traslado_viandas t WHERE t.traslado_id = :trasladoId";
+        entityManager.createQuery(jpql)
+                .setParameter("trasladoId", trasladoId)
+                .executeUpdate();
+        entityManager.getTransaction().commit();
+    }
     public void borrarTraslados() {
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM traslado_viandas").executeUpdate();
         entityManager.createQuery("DELETE FROM traslados").executeUpdate();
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+
 
 }

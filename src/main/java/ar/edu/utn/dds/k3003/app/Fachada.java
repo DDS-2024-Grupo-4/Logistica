@@ -170,6 +170,12 @@ public class Fachada {
 
     public void borrarTraslados(){
 
+        Long maxTrasladoId = trasladoRepository.maximoId();
+
+        for (Long trasladoId = 0L; trasladoId <= maxTrasladoId; trasladoId++) {
+            trasladoRepository.borrarTraslado_Viandas(trasladoId);
+        }
+
         this.trasladoRepository.borrarTraslados();
     }
 
